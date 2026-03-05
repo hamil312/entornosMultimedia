@@ -70,9 +70,11 @@ function SphereSpeaker() {
         alphaMap={alphaMap}
         emissiveMap={emmissiveMap}
         transparent={true}
-        opacity={0.9}
-        roughness={1.0}
-        metalness={0.5}
+        opacity={1}
+        roughness={0.5}
+        metalness={0.1}
+        emissive="#ff5500"
+        emissiveIntensity={0.5}
       />
     </mesh>
   );

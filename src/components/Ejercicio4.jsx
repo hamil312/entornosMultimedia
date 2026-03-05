@@ -2,7 +2,6 @@ import { useLoader, Canvas, useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import { TextureLoader } from "three";
 
-// scene content component (must live inside Canvas)
 function Scene4() {
   const cubeTexture = useLoader(TextureLoader, "/assets/texture1.jpg");
   const sphereTexture = useLoader(TextureLoader, "/assets/texture2.jpg");
@@ -38,12 +37,12 @@ function Scene4() {
 
   return (
     <>
-      {/* Iluminación */}
+
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} castShadow/>
 
       <group ref={groupRef}>
-        {/* Cubo con textura */}
+
         <mesh
           ref={boxRef}
           name="cube"
@@ -55,7 +54,6 @@ function Scene4() {
           <meshStandardMaterial map={cubeTexture} color={groupColor} />
         </mesh>
 
-        {/* Esfera con textura */}
         <mesh
           ref={esfeRef}
           name="sphere"
@@ -67,7 +65,6 @@ function Scene4() {
           <meshStandardMaterial map={sphereTexture} color={groupColor} />
         </mesh>
 
-        {/* Cono con textura */}
         <mesh
           name="cone"
           position={[4, 1, 0]}
@@ -79,7 +76,7 @@ function Scene4() {
         </mesh>
       </group>
       <group ref={group2Ref} onPointerDown={handleGroup2Click}>
-        {/* Cubo con textura */}
+
         <mesh
           ref={boxRef}
           name="cube"
@@ -91,7 +88,6 @@ function Scene4() {
           <meshStandardMaterial map={cubeTexture} color={group2Color} />
         </mesh>
 
-        {/* Esfera con textura */}
         <mesh
           ref={esfeRef}
           name="sphere"
@@ -103,7 +99,6 @@ function Scene4() {
           <meshStandardMaterial map={sphereTexture} color={group2Color} />
         </mesh>
 
-        {/* Cono con textura */}
         <mesh
           name="cone"
           position={[4, 5, 0]}
@@ -118,7 +113,6 @@ function Scene4() {
   );
 }
 
-// top‑level component provides Canvas wrapper
 const Ejercicio4 = () => {
   return (
     <Canvas camera={{ position: [0, 5, 15], fov: 60 }}>

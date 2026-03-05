@@ -39,7 +39,7 @@ function Layout() {
                   <Dropdown.Item href="/laboratorio3">Ejercicio 3</Dropdown.Item>
                   <Dropdown.Item href="/laboratorio4">Ejercicio 4</Dropdown.Item>
                   <Dropdown.Item href="/laboratorio5">Ejercicio 5</Dropdown.Item>
-                  <Dropdown.Item href="">Ejercicio 6</Dropdown.Item>
+                  <Dropdown.Item href="/laboratorio6">Ejercicio 6</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Nav>

@@ -1,64 +1,45 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
-import GUI from 'lil-gui';
-
 const Ejercicio5 = () => {
     const mountRef = useRef(null);
 
     useEffect(() => {
-        // Verificar que el elemento existe
         if (!mountRef.current) return;
 
-        /**
-         * Base
-         */
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x1e1e2f);
         scene.fog = new THREE.Fog(0x1e1e2f, 1, 10);
 
-        const cubeTextureLoader = new THREE.CubeTextureLoader();
+        const rgbeLoader = new RGBELoader();
+        rgbeLoader.load('/assets/pergola_walkway_4k.hdr', (texture) => {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.background = texture;
+            scene.environment = texture;
+        });
 
-        const environmentMap = cubeTextureLoader.load([
-            '/environmentMaps/2/px.png',
-            '/environmentMaps/2/nx.png',
-            '/environmentMaps/2/py.png',
-            '/environmentMaps/2/ny.png',
-            '/environmentMaps/2/pz.png',
-            '/environmentMaps/2/nz.png'
-        ]);
-
-        scene.background = environmentMap;
-        scene.environment = environmentMap;
-
-        // Tamaño
         const sizes = {
             width: window.innerWidth,
             height: window.innerHeight
         };
 
-        /**
-         * Camera
-         */
         const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
         camera.position.set(1, 1, 2);
         scene.add(camera);
 
-        /**
-         * Renderer
-         */
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(sizes.width, sizes.height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1;
         mountRef.current.appendChild(renderer.domElement);
 
-        /**
-         * Lights
-         */
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Color blanco, intensidad 0.5
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(0xffcc00, 0.7);
@@ -76,64 +57,20 @@ const Ejercicio5 = () => {
         spotLight.position.set(0, 2, 3);
         scene.add(spotLight);
 
-        RectAreaLightUniformsLib.init();
-        const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 5, 3, 3);
-        rectAreaLight.position.set(-1.5, 0, 1.5);
-        scene.add(rectAreaLight);
 
-        /**
-         * Helpers
-         */
-
-        //const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight, 0.2);
-        //scene.add(hemisphereLightHelper);
-        //const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 0.2);
-        //scene.add(directionalLightHelper);
-        //const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
-        //scene.add(pointLightHelper);
-        //const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-        //scene.add(spotLightHelper);
-        //const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight);
-        //scene.add(rectAreaLightHelper);
-
-        /**
-         * Objects
-         */
         const material = new THREE.MeshStandardMaterial({ roughness: 0.4 });
-
-        const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
-        sphere.position.x = -1.5;
-
-        const cube = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), material);
         const torus = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.2, 32, 64), material);
-        torus.position.x = 1.5;
 
-        //const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
-        //plane.rotation.x = -Math.PI * 0.5;
-        //plane.position.y = -0.65;
+        scene.add(torus);
 
-        scene.add(sphere, cube, torus);
+        const tick = () => {
+            controls.update();
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(tick);
+        };
+        tick();
 
-        /**
-         * Controls
-         */
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
 
-        /**
-         * GUI (Lil-GUI)
-         */
-        const gui = new GUI();
-        gui.add(ambientLight, 'intensity').min(0).max(3).step(0.001);
-        gui.add(directionalLight, 'intensity').min(0).max(3).step(0.001);
-        gui.add(hemisphereLight, 'intensity').min(0).max(3).step(0.001);
-        gui.add(pointLight, 'intensity').min(0).max(3).step(0.001);
-        gui.add(spotLight, 'intensity').min(0).max(3).step(0.001);
-        gui.add(rectAreaLight, 'intensity').min(0).max(10).step(0.001);
-
-        /**
-         * Resize Handling
-         */
         const handleResize = () => {
             sizes.width = window.innerWidth;
             sizes.height = window.innerHeight;
@@ -146,33 +83,9 @@ const Ejercicio5 = () => {
         };
         window.addEventListener('resize', handleResize);
 
-        /**
-         * Animate
-         */
-        const clock = new THREE.Clock();
-        const tick = () => {
-            const elapsedTime = clock.getElapsedTime();
-
-            sphere.rotation.y = 0.1 * elapsedTime;
-            cube.rotation.y = 0.1 * elapsedTime;
-            torus.rotation.y = 0.1 * elapsedTime;
-
-            sphere.rotation.x = 0.15 * elapsedTime;
-            cube.rotation.x = 0.15 * elapsedTime;
-            torus.rotation.x = 0.15 * elapsedTime;
-
-            controls.update();
-            renderer.render(scene, camera);
-            requestAnimationFrame(tick);
-        };
-        tick();
-
-        /**
-         * Cleanup on Unmount
-         */
         return () => {
-            //gui.destroy();
             window.removeEventListener('resize', handleResize);
+            controls.dispose();
             mountRef.current.removeChild(renderer.domElement);
         };
     }, []);

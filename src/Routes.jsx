@@ -11,7 +11,7 @@ import Lab2 from "./pages/lab2";
 import Lab3 from "./pages/lab3";
 import Lab4 from "./pages/lab4";
 import Lab5 from "./pages/lab5";
-import { path } from "framer-motion/client";
+import Lab6 from "./pages/lab6";
 
 const routes = [
   { path: "/", element: <Inicio />, index: true },
@@ -28,6 +28,7 @@ const routes = [
   { path: "laboratorio3", element: <Lab3 /> },
   { path: "laboratorio4", element: <Lab4 /> },
   { path: "laboratorio5", element: <Lab5 /> },
+  { path: "laboratorio6", element: <Lab6 /> }
 
 ];
 

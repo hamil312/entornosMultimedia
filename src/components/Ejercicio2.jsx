@@ -11,6 +11,7 @@ export default function Ejercicio2() {
 
   useEffect(() => {
     if (!gltf) return;
+    //Interactuar con el primer poste de luz (El más simple y cercano a la camara) para activar o desactivar la luz
     lightRef.current = gltf.scene.getObjectByName("light_curved-Mesh");
     if (!lightRef.current) console.warn("No se encontró light_curved-Mesh");
   }, [gltf]);
