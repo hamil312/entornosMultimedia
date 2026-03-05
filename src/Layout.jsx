@@ -34,11 +34,11 @@ function Layout() {
                   Laboratorio
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="">Ejercicio 1</Dropdown.Item>
-                  <Dropdown.Item href="">Ejercicio 2</Dropdown.Item>
-                  <Dropdown.Item href="">Ejercicio 3</Dropdown.Item>
-                  <Dropdown.Item href="">Ejercicio 4</Dropdown.Item>
-                  <Dropdown.Item href="">Ejercicio 5</Dropdown.Item>
+                  <Dropdown.Item href="/laboratorio1">Ejercicio 1</Dropdown.Item>
+                  <Dropdown.Item href="/laboratorio2">Ejercicio 2</Dropdown.Item>
+                  <Dropdown.Item href="/laboratorio3">Ejercicio 3</Dropdown.Item>
+                  <Dropdown.Item href="/laboratorio4">Ejercicio 4</Dropdown.Item>
+                  <Dropdown.Item href="/laboratorio5">Ejercicio 5</Dropdown.Item>
                   <Dropdown.Item href="">Ejercicio 6</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
